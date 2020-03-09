@@ -1,0 +1,103 @@
+<div class="clearfix"></div>
+
+<div class="allInstititutions">
+    <?php $this->load->view('contents/admin/institution/partial/form_recursive.html', ['parent' => null]); ?>
+</div>
+
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h4 class="card-title"></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            </div> 
+            <div class="card-body">
+                <form action="/admin/institution" method="POST">
+                    <div class="modal-body">
+                        <div class="form-group" style="display: none;">
+                            <input type="text" class="form-control" id="id" name="id">
+                        </div>
+                        <div class="form-group" style="display: none;">
+                            <input type="text" class="form-control" id="id_category" name="id_category">
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-4">
+                                <label>Indice</label>
+                                <input type="text" class="form-control" id="indice" name="indice" placeholder="Insira o índece...">
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label>Natureza</label>
+                                <?php foreach($this->nature->list as $item): ?>
+                                    <div class="form-check">
+                                        <input class="form-check-input id_nature" type="radio" id="id_nature_<?= $item->id ?>" name="id_nature" value="<?= $item->id ?>">
+                                        <label class="form-check-label"><?= $item->name ?></label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Insira o nome...">
+                        </div>
+                        <div class="form-group">
+                            <label>Responsavel pela instituição</label>
+                            <input type="text" class="form-control" id="name_of_responsible_of_institution" name="name_of_responsible_of_institution" placeholder="Insira o responsavel pela instituição...">
+                        </div>
+                        <div class="form-group">
+                            <label>Responsavel pela área social</label>
+                            <input type="text" class="form-control" id="name_of_responsible_of_social_area" name="name_of_responsible_of_social_area" placeholder="Insira o responsavel pela área social...">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Insira o email...">
+                        </div>
+                        <div class="form-group cal-sm-4">
+                            <label>Phone</label>
+                            <input type="text" class="form-control" id="phone" name="phone" placeholder="Insira o phone...">
+                        </div>
+                        <div class="form-group">
+                            <label>Área de cobertura</label>
+                            <textarea class="form-control" rows="3" id="coverage_area" name="coverage_area"  placeholder="Insira a área de cobertura..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label>Endereço</label>
+                                <input type="text" class="form-control" id="address" name="address" placeholder="Insira o endereço (Rua, bairro, Quadra - Número)...">
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-sm-2">
+                                    <label>UF</label>
+                                    <select class="form-control" id="id_state" name="id_state">
+                                        <?php foreach($this->state->list as $item): ?>
+                                            <option value="<?= $item->id ?>"><?= $item->uf ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label>Cidade</label>
+                                    <select class="form-control" id="id_city" name="id_city">
+                                        <?php foreach($this->city->list as $item): ?>
+                                            <option value="<?= $item->id ?>"><?= $item->name ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>   
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btnSaveCategory">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    <!-- /.modal-content -->
+    </div>
+<!-- /.modal-dialog -->
+</div>
+
+<script src="/protected/contents/admin/institution/index.js"></script>

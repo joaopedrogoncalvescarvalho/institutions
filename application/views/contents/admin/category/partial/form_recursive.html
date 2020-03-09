@@ -1,0 +1,43 @@
+<ul>
+    <?php foreach($this->category->list as $item): ?>
+        <?php if($item->parent == $parent): ?>
+            <li>
+                <div class="icons" style="position: relative; right: 0px; display: inline;">
+                    <?= $item->name ?> &nbsp;
+                    <a href="#"><i class="btn addCategory icon-add open-icons-<?= $item->id ?>" data-id="<?= $item->id ?>" data-toggle="modal" data-target="#modal-default"></i></a> 
+                    <div style="display: none; position: relative; background-color: #FFFFFF; border-radius: 20%; left: -28px;" class="div-icons-<?= $item->id ?>">
+                        <a href="#"><i class="btn addCategory icon-add" data-id="<?= $item->id ?>" data-toggle="modal" data-target="#modal-default"></i></a> 
+                        <a href="#"><i class="btn editCategory icon-edit" data-id="<?= $item->id ?>" data-toggle="modal" data-target="#modal-default"></i></i></a> &nbsp; 
+                        <a href="#"><i class="btn icon-remove" data-id="<?= $item->id ?>" ></i></a>
+                    </div>
+                </div>
+                <script>
+                    $('.open-icons-<?= $item->id ?>').mousemove(function()
+                    {
+                        $('.div-icons-<?= $item->id ?>').css('display', 'inline');
+
+                        console.log($('.open-icons-<?= $item->id ?>')); 
+
+                        setTimeout(function()
+                        {
+                            $('.div-icons-<?= $item->id ?>').css('display', 'none');
+                        }, 5000);
+                    });
+
+                    $('.div-icons-<?= $item->id ?>').mousemove(function()
+                    {
+                        $('.div-icons-<?= $item->id ?>').css('display', 'inline');
+                    });
+
+                    $('.div-icons-<?= $item->id ?>').mouseout(function()
+                    {
+                        $('.div-icons-<?= $item->id ?>').css('display', 'none');
+                    });
+                </script>
+                <div>
+                    <?php $this->load->view('contents/admin/category/partial/form_recursive.html', ['parent' => $item->id]); ?>
+                </div>
+            </li>
+        <?php endif; ?>
+    <?php endforeach; ?>
+</ul>

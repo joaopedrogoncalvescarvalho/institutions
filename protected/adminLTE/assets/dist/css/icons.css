@@ -1,0 +1,27 @@
+i.icon-add
+{
+    background: transparent url('/protected/open-iconic-master/png/icons8-adicionar-64.png') no-repeat; 
+    background-size: 18px 18px; 
+    background-position: center;
+}
+
+i.icon-remove
+{
+    background: transparent url('/protected/open-iconic-master/png/remove.png') no-repeat; 
+    background-size: 18px 18px; 
+    background-position: center;
+}
+
+i.icon-edit 
+{
+    background: transparent url('/protected/open-iconic-master/png/edit.png') no-repeat; 
+    background-size: 18px 18px; 
+    background-position: center;
+}
+
+i.open-icons
+{
+    background: transparent url('/protected/open-iconic-master/png/aperture-2x.png') no-repeat; 
+    background-size: 18px 18px; 
+    background-position: center;
+}

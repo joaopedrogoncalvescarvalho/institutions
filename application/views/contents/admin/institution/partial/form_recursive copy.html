@@ -1,0 +1,62 @@
+<?php foreach($this->category->list as $item): ?>
+    <?php if($item->parent == $parent): ?>
+        <div class="row">
+            <div class="icons col-6 col-sm-6">
+                <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab-<?= $item->id ?>" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link" id="vert-tabs-<?= $item->id ?>-tab" data-toggle="pill" href="#vert-tabs-<?= $item->id ?>" role="tab" aria-controls="vert-tabs-<?= $item->id ?>" aria-selected="true">
+                        <b><?= $item->indice ?></b>&nbsp;&nbsp;<?= $item->name ?> 
+                        <?php if(!$item->category->hasLineage($item->id)): ?>
+                            <i class="btn addInstitution icon-add" data-id_category="<?= $item->id ?>" data-toggle="modal" data-target="#modal-default"></i>
+                        <?php endif; ?>
+                    </a>
+                </div>
+            </div>
+            <?php foreach($this->institution->list as $institution): ?>
+                <?php if($institution->id_category == $item->id): ?>
+                    <div class="col-6 col-sm-6">
+                        <div class="tab-content" id="vert-tabs-tabContent">
+                            <div class="tab-pane text-left fade" id="vert-tabs-<?= $item->id ?>" role="tabpanel" aria-labelledby="vert-tabs-<?= $item->id ?>--tab">
+                                <b><?= $institution->indice ?></b>&nbsp;&nbsp;<?= $institution->name ?> 
+                                <a class="btn btn-app open-icons-<?= $item->id ?>" data-id="<?= $institution->id ?>" data-toggle="modal" data-target="#modal-default">
+                                <a class="btn btn-app open-icons-<?= $item->id ?>" data-id="<?= $institution->id ?>" data-toggle="modal" data-target="#modal-default">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <a href="#"><i class="btn icon-remove" data-id="<?= $institution->id ?>" ></i></a>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+        <script>
+            var open = null;
+
+            $('#vert-tabs-tab-<?= $item->id ?>').click(function()
+            {
+                $('.nav-link').removeClass('active');
+                $('.fade').removeClass('show active');
+            });
+
+            $('.open-icons-<?= $item->id ?>').mousemove(function()
+            {
+                $('.div-icons-<?= $item->id ?>').css('display', 'inline');
+
+                setTimeout(function()
+                {
+                    $('.div-icons-<?= $item->id ?>').css('display', 'none');
+                }, 5000);
+            });
+
+            $('.div-icons-<?= $item->id ?>').mousemove(function()
+            {
+                $('.div-icons-<?= $item->id ?>').css('display', 'inline');
+            });
+
+            $('.div-icons-<?= $item->id ?>').mouseout(function()
+            {
+                $('.div-icons-<?= $item->id ?>').css('display', 'none');
+            });
+        </script>
+        <?php $this->load->view('contents/admin/institution/partial/form_recursive.html', ['parent' => $item->id]); ?>
+    <?php endif; ?>
+<?php endforeach; ?>
