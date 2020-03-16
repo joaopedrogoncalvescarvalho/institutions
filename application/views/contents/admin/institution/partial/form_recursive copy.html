@@ -1,62 +1,128 @@
-<?php foreach($this->category->list as $item): ?>
-    <?php if($item->parent == $parent): ?>
-        <div class="row">
-            <div class="icons col-6 col-sm-6">
-                <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab-<?= $item->id ?>" role="tablist" aria-orientation="vertical">
-                    <a class="nav-link" id="vert-tabs-<?= $item->id ?>-tab" data-toggle="pill" href="#vert-tabs-<?= $item->id ?>" role="tab" aria-controls="vert-tabs-<?= $item->id ?>" aria-selected="true">
-                        <b><?= $item->indice ?></b>&nbsp;&nbsp;<?= $item->name ?> 
-                        <?php if(!$item->category->hasLineage($item->id)): ?>
-                            <i class="btn addInstitution icon-add" data-id_category="<?= $item->id ?>" data-toggle="modal" data-target="#modal-default"></i>
-                        <?php endif; ?>
-                    </a>
+<?php foreach($this->category->list as $j => $category): ?>
+    <?php if($category->parent == $parent): ?>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><b><?= $category->indice ?></b>&nbsp;&nbsp;<?= $category->name ?></h3>
+            </div>
+            <div class="card-body">
+                <div id="accordion">
+                    <?php if($this->category->hasLineage($category->id)): ?>
+                        <?php $this->load->view('contents/admin/institution/partial/form_recursive.html', ['parent' => $category->id]); ?>
+                    <?php else: ?>
+                        <button class="btn btn-success btn-sm" style="margin-bottom: 15px;">Adicionar</button>
+                        <?php foreach($this->institution->list as $i => $institution): ?>
+                            <?php if($institution['id_category'] == $category->id): ?>
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h4 class="card-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse<?= $institution['id'] ?>" aria-expanded="false">
+                                                <b><?= $institution['indice'] ?></b>&nbsp;&nbsp;<?= $institution['name'] ?>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse<?= $institution['id'] ?>" class="panel-collapse in collapse">
+                                        <div class="card-body">
+                                            <form action="/admin/institution" method="POST">
+                                                <div class="modal-body">
+                                                    <div class="form-group" style="display: none;">
+                                                        <input type="text" class="form-control id" name="id" value="<?= $institution['id'] ?>">
+                                                    </div>
+                                                    <div class="form-group" style="display: none;">
+                                                        <input type="text" class="form-control id_category" name="id_category" value="<?= $institution['id_category']; ?>">
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-group col-sm-4">
+                                                            <label>Indice</label>
+                                                            <input type="text" class="form-control indice" name="indice" 
+                                                            value="<?php if(empty(set_value('indice'))) echo $institution['indice']; else echo set_value('indice'); ?>" 
+                                                            placeholder="Insira o índece...">
+                                                            <div class="clearfix"></div>
+                                                            <?php echo form_error('indice'); ?>
+                                                        </div>
+                                                        <div class="form-group col-sm-4">
+                                                            <label>Natureza</label>
+                                                            <?php foreach($this->nature->list as $nature): ?>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input id_nature_<?= $nature->id ?>" value="<?= $nature->id ?>" type="radio" <?php if($nature->id == $institution['id_nature']) echo 'checked="checked"'; else '';?>" name="id_nature" >
+                                                                    <label class="form-check-label"><?= $nature->name ?></label>
+                                                                </div>
+                                                            <?php endforeach; ?>
+                                                            <div class="clearfix"></div>
+                                                            <?php echo form_error('id_nature'); ?>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Name</label>
+                                                        <input type="text" class="form-control name" name="name" value="<?php if(empty(set_value('name'))) echo $institution['name']; else echo set_value('name')?>" placeholder="Insira o nome...">
+                                                    </div>
+                                                    <?php echo form_error('name'); ?>
+                                                    <div class="form-group">
+                                                        <label>Responsavel pela instituição</label>
+                                                        <input type="text" class="form-control name_of_responsible_of_institution" name="name_of_responsible_of_institution" value="<?php if(empty(set_value('name_of_responsible_of_institution'))) echo $institution['name_of_responsible_of_institution']; else echo set_value('name_of_responsible_of_institution'); ?>" placeholder="Insira o responsavel pela instituição...">
+                                                    </div>
+                                                    <?php echo form_error('name_of_responsible_of_institution'); ?>
+                                                    <div class="form-group">
+                                                        <label>Responsavel pela área social</label>
+                                                        <input type="text" class="form-control name_of_responsible_of_social_area" name="name_of_responsible_of_social_area" value="<?php if(empty(set_value('name_of_responsible_of_social_area'))) echo $institution['name_of_responsible_of_social_area']; else echo set_value('name_of_responsible_of_social_area'); ?>" placeholder="Insira o responsavel pela área social...">
+                                                    </div>
+                                                    <?php echo form_error('name_of_responsible_of_social_area'); ?>
+                                                    <div class="form-group">
+                                                        <label>Email</label>
+                                                        <input type="email" class="form-control email" name="email" value="<?php if(empty(set_value('email'))) echo $institution['email']; else echo set_value('email'); ?>" placeholder="Insira o email...">
+                                                    </div>
+                                                    <?php echo form_error('email'); ?>
+                                                    <div class="form-group cal-sm-4">
+                                                        <label>Phone</label>
+                                                        <input type="text" class="form-control phone" name="phone" value="<?php if(empty(set_value('phone'))) echo $institution['phone']; else echo set_value('phone'); ?>" placeholder="Insira o phone...">
+                                                    </div>
+                                                    <?php echo form_error('phone'); ?>
+                                                    <div class="form-group">
+                                                        <label>Área de cobertura</label>
+                                                        <textarea class="form-control coverage_area" rows="3" name="coverage_area"  placeholder="Insira a área de cobertura..."><?php if(empty(set_value('coverage_area'))) echo $institution['coverage_area']; else echo set_value('coverage_area'); ?></textarea>
+                                                    </div>
+                                                    <?php echo form_error('coverage_area'); ?>
+                                                    <div class="form-group">
+                                                        <div class="form-group">
+                                                            <label>Endereço</label>
+                                                            <input type="text" class="form-control address" name="address" value="<?php if(empty(set_value('address'))) echo $institution['address']; else echo set_value('address'); ?>" placeholder="Insira o endereço (Rua, bairro, Quadra - Número)...">
+                                                        </div>
+                                                        <?php echo form_error('address'); ?>
+                                                        <div class="row">
+                                                            <div class="form-group col-sm-2">
+                                                                <label>UF</label>
+                                                                <select class="form-control id_state" id="id_state_<?= $j ?>_<?= $i ?>" name="id_state">
+                                                                    <?php foreach($this->state->list as $item): ?>
+                                                                        <option <?php if($item->id == $institution['id_state']) echo 'selected'; ?> value="<?= $item->id ?>"><?= $item->uf ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group col-sm-6">
+                                                                <label>Cidade</label>
+                                                                <select class="form-control id_city" id="id_city_<?= $j ?>_<?= $i ?>" name="id_city">
+                                                                    <?php foreach($this->city->list as $item): ?>
+                                                                        <?php if($item->id_state == $institution['id_state']): ?>
+                                                                            <option <?php if($item->id == $institution['id_city']) echo 'selected'; ?> value="<?= $item->id ?>"><?= $item->name ?></option>
+                                                                        <?php endif; ?>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>   
+                                                        <?php echo form_error('id_city'); ?>
+                                                    </div>
+                                                    <div class="modal-footer justify-content-between">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary btnSaveCategory">Save changes</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
             </div>
-            <?php foreach($this->institution->list as $institution): ?>
-                <?php if($institution->id_category == $item->id): ?>
-                    <div class="col-6 col-sm-6">
-                        <div class="tab-content" id="vert-tabs-tabContent">
-                            <div class="tab-pane text-left fade" id="vert-tabs-<?= $item->id ?>" role="tabpanel" aria-labelledby="vert-tabs-<?= $item->id ?>--tab">
-                                <b><?= $institution->indice ?></b>&nbsp;&nbsp;<?= $institution->name ?> 
-                                <a class="btn btn-app open-icons-<?= $item->id ?>" data-id="<?= $institution->id ?>" data-toggle="modal" data-target="#modal-default">
-                                <a class="btn btn-app open-icons-<?= $item->id ?>" data-id="<?= $institution->id ?>" data-toggle="modal" data-target="#modal-default">
-                                    <i class="fas fa-edit"></i> Edit
-                                </a>
-                                <a href="#"><i class="btn icon-remove" data-id="<?= $institution->id ?>" ></i></a>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-            <?php endforeach; ?>
         </div>
-        <script>
-            var open = null;
-
-            $('#vert-tabs-tab-<?= $item->id ?>').click(function()
-            {
-                $('.nav-link').removeClass('active');
-                $('.fade').removeClass('show active');
-            });
-
-            $('.open-icons-<?= $item->id ?>').mousemove(function()
-            {
-                $('.div-icons-<?= $item->id ?>').css('display', 'inline');
-
-                setTimeout(function()
-                {
-                    $('.div-icons-<?= $item->id ?>').css('display', 'none');
-                }, 5000);
-            });
-
-            $('.div-icons-<?= $item->id ?>').mousemove(function()
-            {
-                $('.div-icons-<?= $item->id ?>').css('display', 'inline');
-            });
-
-            $('.div-icons-<?= $item->id ?>').mouseout(function()
-            {
-                $('.div-icons-<?= $item->id ?>').css('display', 'none');
-            });
-        </script>
-        <?php $this->load->view('contents/admin/institution/partial/form_recursive.html', ['parent' => $item->id]); ?>
     <?php endif; ?>
 <?php endforeach; ?>

@@ -18,7 +18,6 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" ></script>
   <?php if(isset($css)): ?>
     <?php foreach($css as $item): ?>
       <link rel="stylesheet" href="<?= $item ?>">
@@ -138,16 +137,8 @@ to get the desired effect
 </div>
 <!-- ./wrapper -->
 
-<!-- REQUIRED SCRIPTS -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
 <!-- jQuery -->
 <script src="/protected/adminLTE/assets/plugins/jquery/jquery.min.js"></script>
-<?php if(isset($jquery)): ?>
-  <?php foreach($jquery as $item): ?>
-    <script src="<?= $item ?>"></script>
-  <?php endforeach; ?>
-<?php endif; ?>
 
 <!-- Bootstrap -->
 <script src="/protected/adminLTE/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>

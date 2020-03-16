@@ -9,102 +9,125 @@
                     <?php if($this->category->hasLineage($category->id)): ?>
                         <?php $this->load->view('contents/admin/institution/partial/form_recursive.html', ['parent' => $category->id]); ?>
                     <?php else: ?>
-                        <?php foreach($this->institution->list as $i => $institution): ?>
-                            <?php if($institution['id_category'] == $category->id): ?>
-                                <div class="card card-primary">
-                                    <div class="card-header">
-                                        <h4 class="card-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse<?= $institution['id'] ?>" aria-expanded="false">
-                                                <b><?= $institution['indice'] ?></b>&nbsp;&nbsp;<?= $institution['name'] ?>
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapse<?= $institution['id'] ?>" class="panel-collapse in collapse">
-                                        <div class="card-body">
-                                            <form action="/admin/institution" method="POST">
-                                                <div class="modal-body">
-                                                    <div class="form-group" style="display: none;">
-                                                        <input type="text" class="form-control id" name="id" value="<?= $institution['id'] ?>">
-                                                    </div>
-                                                    <div class="form-group" style="display: none;">
-                                                        <input type="text" class="form-control id_category" name="id_category" value="<?= $institution['id_category'] ?>">
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="form-group col-sm-4">
-                                                            <label>Indice</label>
-                                                            <input type="text" class="form-control indice" name="indice" value="<?= $institution['indice'] ?>" placeholder="Insira o índece...">
+                        <div id="content_category_<?= $category->id ?>" data-id="<?= $category->id ?>" class="move-allowed" ondrop="drop_handler(event);" ondragover="dragover_handler(event);">
+                            <button class="btn btn-block btn-outline-primary btn-sm btnAddInstitution" data-toggle="modal" data-target="#modal-lg" style="margin-bottom: 10px;" data-id="<?= $category->id ?>">
+                                Adicionar
+                            </button>
+                            <?php foreach($this->institution->list as $i => $institution): ?>
+                                <?php if($institution['id_category'] == $category->id): ?>
+                                    <div id="intitution_<?= $institution['id'] ?>" data-id="<?= $institution['id'] ?>" draggable="true" ondragstart="dragstart_handler(event);" class="card card-secondary content-institution">
+                                        <div class="card-header">
+                                            <h4 class="card-title" style="width: 100%;">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse<?= $institution['id'] ?>" aria-expanded="false">
+                                                    <b><?= $institution['indice'] ?></b>&nbsp;&nbsp;<?= $institution['name'] ?>
+                                                </a>
+                                                <div class="btn-group" style="float: right;">
+                                                    <button type="button" class="btn btn-info btn-xs">Mover</button>
+                                                    <button type="button" class="btn btn-danger btn-xs btnDeleteInstitution" data-id="<?= $institution['id'] ?>">Excluir</button>
+                                                </div>
+                                            </h4>
+                                        </div>
+                                        <div id="collapse<?= $institution['id'] ?>" class="panel-collapse in collapse">
+                                            <div class="card-body">
+                                                <form action="/admin/institution" method="POST">
+                                                    <div class="modal-body">
+                                                        <div class="form-group" style="display: none;">
+                                                            <input type="text" class="form-control id" name="id" value="<?= $institution['id'] ?>">
                                                         </div>
-                                                        <div class="form-group col-sm-4">
-                                                            <label>Natureza</label>
-                                                            <?php foreach($this->nature->list as $nature): ?>
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input id_nature_<?= $nature->id ?>" value="<?= $nature->id ?>" type="radio" checked="<?php if($nature->id == $institution['id_nature']) echo 'checked'; else '';?>" name="id_nature" >
-                                                                    <label class="form-check-label"><?= $nature->name ?></label>
-                                                                </div>
-                                                            <?php endforeach; ?>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Name</label>
-                                                        <input type="text" class="form-control name" name="name" value="<?= $institution['name'] ?>" placeholder="Insira o nome...">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Responsavel pela instituição</label>
-                                                        <input type="text" class="form-control name_of_responsible_of_institution" name="name_of_responsible_of_institution" value="<?= $institution['name_of_responsible_of_institution'] ?>" placeholder="Insira o responsavel pela instituição...">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Responsavel pela área social</label>
-                                                        <input type="text" class="form-control name_of_responsible_of_social_area" name="name_of_responsible_of_social_area" value="<?= $institution['name_of_responsible_of_social_area'] ?>" placeholder="Insira o responsavel pela área social...">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Email</label>
-                                                        <input type="email" class="form-control email" name="email" value="<?= $institution['email'] ?>" placeholder="Insira o email...">
-                                                    </div>
-                                                    <div class="form-group cal-sm-4">
-                                                        <label>Phone</label>
-                                                        <input type="text" class="form-control phone" name="phone" value="<?= $institution['phone'] ?>" placeholder="Insira o phone...">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Área de cobertura</label>
-                                                        <textarea class="form-control coverage_area" rows="3" name="coverage_area"  placeholder="Insira a área de cobertura..."><?= $institution['coverage_area'] ?></textarea>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="form-group">
-                                                            <label>Endereço</label>
-                                                            <input type="text" class="form-control address" name="address" value="<?= $institution['address'] ?>" placeholder="Insira o endereço (Rua, bairro, Quadra - Número)...">
+                                                        <div class="form-group" style="display: none;">
+                                                            <input type="text" class="form-control id_category" name="id_category" value="<?= $institution['id_category']; ?>">
                                                         </div>
                                                         <div class="row">
-                                                            <div class="form-group col-sm-2">
-                                                                <label>UF</label>
-                                                                <select class="form-control id_state" id="id_state_<?= $j ?>_<?= $i ?>" name="id_state">
-                                                                    <?php foreach($this->state->list as $item): ?>
-                                                                        <option <?php if($item->id == $institution['id_state']) echo 'selected'; ?> value="<?= $item->id ?>"><?= $item->uf ?></option>
-                                                                    <?php endforeach; ?>
-                                                                </select>
+                                                            <div class="form-group col-sm-4">
+                                                                <label>Indice</label>
+                                                                <input type="text" class="form-control indice" name="indice" 
+                                                                value="<?php if(empty(set_value('indice'))) echo $institution['indice']; else echo set_value('indice'); ?>" 
+                                                                placeholder="Insira o índece...">
+                                                                <div class="clearfix"></div>
+                                                                <?php echo form_error('indice'); ?>
                                                             </div>
-                                                            <div class="form-group col-sm-6">
-                                                                <label>Cidade</label>
-                                                                <select class="form-control id_city" id="id_city_<?= $j ?>_<?= $i ?>" name="id_city">
-                                                                    <?php foreach($this->city->list as $item): ?>
-                                                                        <?php if($item->id_state == $institution['id_state']): ?>
-                                                                            <option <?php if($item->id == $institution['id_city']) echo 'selected'; ?> value="<?= $item->id ?>"><?= $item->name ?></option>
-                                                                        <?php endif; ?>
-                                                                    <?php endforeach; ?>
-                                                                </select>
+                                                            <div class="form-group col-sm-4">
+                                                                <label>Natureza</label>
+                                                                <?php foreach($this->nature->list as $nature): ?>
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input id_nature_<?= $nature->id ?>" value="<?= $nature->id ?>" type="radio" <?php if($nature->id == $institution['id_nature']) echo 'checked="checked"'; else '';?>" name="id_nature" >
+                                                                        <label class="form-check-label"><?= $nature->name ?></label>
+                                                                    </div>
+                                                                <?php endforeach; ?>
+                                                                <div class="clearfix"></div>
+                                                                <?php echo form_error('id_nature'); ?>
                                                             </div>
-                                                        </div>   
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Name</label>
+                                                            <input type="text" class="form-control name" name="name" value="<?php if(empty(set_value('name'))) echo $institution['name']; else echo set_value('name')?>" placeholder="Insira o nome...">
+                                                        </div>
+                                                        <?php echo form_error('name'); ?>
+                                                        <div class="form-group">
+                                                            <label>Responsavel pela instituição</label>
+                                                            <input type="text" class="form-control name_of_responsible_of_institution" name="name_of_responsible_of_institution" value="<?php if(empty(set_value('name_of_responsible_of_institution'))) echo $institution['name_of_responsible_of_institution']; else echo set_value('name_of_responsible_of_institution'); ?>" placeholder="Insira o responsavel pela instituição...">
+                                                        </div>
+                                                        <?php echo form_error('name_of_responsible_of_institution'); ?>
+                                                        <div class="form-group">
+                                                            <label>Responsavel pela área social</label>
+                                                            <input type="text" class="form-control name_of_responsible_of_social_area" name="name_of_responsible_of_social_area" value="<?php if(empty(set_value('name_of_responsible_of_social_area'))) echo $institution['name_of_responsible_of_social_area']; else echo set_value('name_of_responsible_of_social_area'); ?>" placeholder="Insira o responsavel pela área social...">
+                                                        </div>
+                                                        <?php echo form_error('name_of_responsible_of_social_area'); ?>
+                                                        <div class="form-group">
+                                                            <label>Email</label>
+                                                            <input type="email" class="form-control email" name="email" value="<?php if(empty(set_value('email'))) echo $institution['email']; else echo set_value('email'); ?>" placeholder="Insira o email...">
+                                                        </div>
+                                                        <?php echo form_error('email'); ?>
+                                                        <div class="form-group cal-sm-4">
+                                                            <label>Phone</label>
+                                                            <input type="text" class="form-control phone" name="phone" value="<?php if(empty(set_value('phone'))) echo $institution['phone']; else echo set_value('phone'); ?>" placeholder="Insira o phone...">
+                                                        </div>
+                                                        <?php echo form_error('phone'); ?>
+                                                        <div class="form-group">
+                                                            <label>Área de cobertura</label>
+                                                            <textarea class="form-control coverage_area" rows="3" name="coverage_area"  placeholder="Insira a área de cobertura..."><?php if(empty(set_value('coverage_area'))) echo $institution['coverage_area']; else echo set_value('coverage_area'); ?></textarea>
+                                                        </div>
+                                                        <?php echo form_error('coverage_area'); ?>
+                                                        <div class="form-group">
+                                                            <div class="form-group">
+                                                                <label>Endereço</label>
+                                                                <input type="text" class="form-control address" name="address" value="<?php if(empty(set_value('address'))) echo $institution['address']; else echo set_value('address'); ?>" placeholder="Insira o endereço (Rua, bairro, Quadra - Número)...">
+                                                            </div>
+                                                            <?php echo form_error('address'); ?>
+                                                            <div class="row">
+                                                                <div class="form-group col-sm-2">
+                                                                    <label>UF</label>
+                                                                    <select class="form-control id_state" id="id_state_<?= $j ?>_<?= $i ?>" name="id_state">
+                                                                        <?php foreach($this->state->list as $item): ?>
+                                                                            <option <?php if($item->id == $institution['id_state']) echo 'selected'; ?> value="<?= $item->id ?>"><?= $item->uf ?></option>
+                                                                        <?php endforeach; ?>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group col-sm-6">
+                                                                    <label>Cidade</label>
+                                                                    <select class="form-control id_city" id="id_city_<?= $j ?>_<?= $i ?>" name="id_city">
+                                                                        <?php foreach($this->city->list as $item): ?>
+                                                                            <?php if($item->id_state == $institution['id_state']): ?>
+                                                                                <option <?php if($item->id == $institution['id_city']) echo 'selected'; ?> value="<?= $item->id ?>"><?= $item->name ?></option>
+                                                                            <?php endif; ?>
+                                                                        <?php endforeach; ?>
+                                                                    </select>
+                                                                </div>
+                                                            </div>   
+                                                            <?php echo form_error('id_city'); ?>
+                                                        </div>
+                                                        <div class="modal-footer justify-content-between">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary btnSaveCategory">Save changes</button>
+                                                        </div>
                                                     </div>
-                                                    <div class="modal-footer justify-content-between">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-primary btnSaveCategory">Save changes</button>
-                                                    </div>
-                                                </div>
-                                            </form>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>

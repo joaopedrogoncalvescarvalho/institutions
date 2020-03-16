@@ -1,88 +1,139 @@
-$('.addInstitution').click(function()
-{
-    $('.card-title').text('Adicionar instituição');
+{ //action buttons .btnAddInstitution 
+    let btnAddInstitution = document.querySelectorAll('.btnAddInstitution');
 
-    loadDropDownCities(1);
+    for (i in btnAddInstitution) {
+        btnAddInstitution[i].onclick = function () {
+            { //Carregando dropdownlist #id_city ao clicar do button adicionar instituição
+                let selectState = document.querySelector('#id_state');
+                let value = selectState.options[selectState.selectedIndex].value;
 
-    console.log($(this).attr('data-id_category'));
+                loadCities(value, '#id_city');
+            }
 
-    $('#id').val('');
-    $('#id_category').val($(this).attr('data-id_category'));
-    $('#indice').val('');
-    $('.id_nature').prop('CHECKED', false);
-    $('#name').val('');
-    $('#name_of_responsible_of_institution').val('');
-    $('#name_of_responsible_of_social_area').val('');
-    $('#email').val('');
-    $('#phone').val('');
-    $('#coverage_area').val('');
-    $('#address').val('');
-    $('#id_state').val(1);
-    $('#id_city').val(1);
-});
+            { //Adicionando valor ao input text #id_category
+                let inputText = document.querySelector('#id_category');
+                inputText.value = this.getAttribute('data-id');
+            }
+        }
+    }
+}
 
-function loadDropDownCities(id_state)
-{
-    $.get('/admin/city/loadByState/' + id_state, function(result)
+{ //Carregando dropdownlist #id_city ao mudar de opção em #id_state
+    let selectState = document.querySelector('#id_state');
+
+    selectState.onchange = function()
     {
-        let cities = JSON.parse(result);
+        let value = selectState.options[selectState.selectedIndex].value;
 
-        let html = '';
+        loadCities(value, '#id_city');
+    }
+}
 
-        cities.forEach(row => {
-            html += '<option value="' + row['id'] + '">' + row['name'] + '</option>';
-        });
+function loadCities(idState, tag) 
+{
+    $.ajax({
+        url: "/admin/city/loadByState",
+        method: "GET", 
+        data: {
+            idState: idState
+        } 
+    }).done(function(result)
+    {
+        cities = JSON.parse(result);
 
-        return html;
+        let selectCity = document.querySelector(tag);
+        selectCity.innerText = document.createTextNode('');
+
+        for (city in cities) {
+            let option = document.createElement('option');
+
+            let textHtml = document.createTextNode(cities[city]['name']);
+
+            option.appendChild(textHtml);
+            option.value = cities[city]['id'];
+
+            selectCity.appendChild(option);
+        }
+    })
+}
+
+{//action buttons .btnDeleteInstitution
+    let btnDeleteInstitution = document.querySelectorAll('.btnDeleteInstitution');
+
+    for(i in btnDeleteInstitution)
+    {
+        btnDeleteInstitution[i].onclick = function()
+        {
+            if(confirm('Confirme a exclusão aqui.'))
+            {
+                deleteInstitution(this.getAttribute('data-id'));
+
+                let parent = this.parentNode.parentNode.parentNode.parentNode;
+
+                parent.remove();
+            }
+            
+        }
+    }
+}
+
+function deleteInstitution(idInstitution)
+{
+    return  $.ajax({
+        url: "/admin/institution/delete",
+        method: "POST",
+        data: {
+            idInstitution: idInstitution
+        }
     });
 }
 
-$('.editInstitution').click(function()
 {
-    $('.card-title').text('Editar dados da instituição');
+    let contents_category = document.querySelectorAll('.move-allowed');
 
-    $('#id').val($(this).attr('data-id'));
-
-    loadDropDownCities($('#id_state'));
-
-    $.get('/admin/institution/loadFull/' + $(this).attr('data-id'), function(result)
+    function dragstart_handler(event)
     {
-        let institution = JSON.parse(result);
+        // Adiciona o id do elemento alvo para o objeto de transferência de dados
+        event.dataTransfer.setData("text/plain", event.target.id);
+        event.dropEffect = "move";
 
-        institution.forEach(function(row)
-        {
-            for(item in row)
-            {
-                if($($('.' + item)).attr('type') == 'radio')
-                {
-                    if(item == 'id_nature')
-                    {
-                        $('#' + item + '_' + row[item]).prop('checked',true);
-                    }
-                }
-                else if($($('#' + item)).prop("tagName") == 'SELECT')
-                {
-                    $('#' + item).val(row[item]);
-                }
-                else
-                {
-                    $('#' + item).val(row[item]);
-                }
+        contents_category.forEach(elementCategory => {
+            elementCategory.setAttribute('style', 'padding-bottom: 80px;');
+        });
+
+    }
+
+    function dragover_handler(event)
+    {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = "move";
+    }
+
+    function drop_handler(event) {
+        event.preventDefault();
+
+        let dataTransfer = event.dataTransfer.getData("text");
+
+        event.target.appendChild(document.getElementById(dataTransfer));
+
+        let institution = document.getElementById(dataTransfer);
+
+        updateCategory(event.target.getAttribute('data-id'), institution.getAttribute('data-id'));
+
+        contents_category.forEach(elementCategory => {
+            elementCategory.setAttribute('style', '');
+        });
+    }
+
+    function updateCategory(idCategory, idInstitution)
+    {
+        return  $.ajax({
+            url: "/admin/institution/updateCategory",
+            method: "POST",
+            data: {
+                idCategory: idCategory,
+                idInstitution: idInstitution
             }
         });
-    });
-});
-
-$('.icon-remove').click(function()
-{
-    if(confirm('Deseja remover essa categoria e suas subcategorias'))
-    {
-        window.location.href = '/admin/institution/delete/' + $(this).attr('data-id');
     }
-});
-
-$('#id_state').change(function()
-{
-    if($('#id_state').val() != '')
-        loadDropDownCities($('#id_state').val());
-});
+}

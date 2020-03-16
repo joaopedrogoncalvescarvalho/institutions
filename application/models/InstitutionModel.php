@@ -29,7 +29,46 @@ class InstitutionModel extends Model
             'type' => '1_1'
         ], 
     );
-    const FORM_VALIDATION = array(); 
+    
+    const FORM_VALIDATION = array(
+        0 => ['indice', 'indice', ['required'], [
+            'required' => 'Campo obrigátorio',
+        ]],
+        1 => ['name', 'name', ['required', 'min_length[10]', 'max_length[200]', 'regex_match[/[a-zA-Z\u00C0-\u00FF ]+/i]/'], [
+            'required' => 'Campo obrigátorio',
+            'minlength' => 'Campo deve conter no mínino 10 caracteres',
+            'maxlength' => 'Campo deve conter no mínino 200 caracteres',
+            'regex_match' => 'Evite caracteres especiais'
+        ]],
+        2 => ['name_of_responsible_of_institution', 'name_of_responsible_of_institution', ['required', 'min_length[6]', 'max_length[100]', 'regex_match[/[a-zA-Z\u00C0-\u00FF ]+/i]/'], [
+            'required' => 'Campo obrigátorio',
+            'minlength' => 'Campo deve conter no mínino 6 caracteres',
+            'maxlength' => 'Campo deve conter no máximo 100 caracteres',
+            'regex_match' => 'Evite caracteres especiais'
+        ]],
+        3 => ['name_of_responsible_of_social_area', 'name_of_responsible_of_social_area', ['required', 'min_length[6]', 'max_length[200]', 'regex_match[/[a-zA-Z\u00C0-\u00FF ]+/i]/'], [
+            'required' => 'Campo obrigátorio',
+            'minlength' => 'Campo deve conter no mínino 6 caracteres',
+            'maxlength' => 'Campo deve conter no máximo 200 caracteres',
+            'regex_match' => 'Evite caracteres especiais'
+        ]],
+        4 => ['phone', 'phone', ['required'], []],
+        5 => ['email', 'email', ['required', 'valid_email'], [
+            'required' => 'Campo obrigátotio',
+            'valid_email' => 'Endereço de e-mail inválido'
+        ]],
+        6 => ['address', 'address', ['required', 'min_length[10]', 'max_length[200]'], [
+            'required' => 'Campo obrigátorio',
+            'minlength' => 'Campo deve conter no mínino 10 caracteres',
+            'maxlength' => 'Campo deve conter no máximo 200 caracteres',
+        ]],
+        7 => ['coverage_area', 'coverage_area', ['required'], [
+            'required' => 'Campo obrigátorio'
+        ]],
+        8 => ['id_nature', 'id_nature', ['required'], [
+            'required' => 'Campo obrigátorio'
+        ]]
+    ); 
 
     public $id;
     public $indice;
@@ -48,7 +87,7 @@ class InstitutionModel extends Model
     {
         if(empty($data['id']))
         {
-            $executation = $this->sql->query(
+            $result = $this->sql->query(
                 'INSERT INTO tb_address
                     (address, id_city)
                 VALUES
@@ -57,7 +96,7 @@ class InstitutionModel extends Model
                 ':id_city' => $data['id_city']
             ));
 
-            $this->sql->query('
+            $result = $this->sql->query('
                 INSERT INTO tb_institutions
                     (indice, name, id_nature, name_of_responsible_of_institution, name_of_responsible_of_social_area, id_address, phone, email, coverage_area, id_category) 
                 VALUES 
@@ -67,7 +106,7 @@ class InstitutionModel extends Model
                 ':id_nature' => $data['id_nature'], 
                 ':name_of_responsible_of_institution' => $data['name_of_responsible_of_institution'], 
                 ':name_of_responsible_of_social_area' => $data['name_of_responsible_of_social_area'], 
-                ':id_address' => $executation['status']->lastInsertId(),
+                ':id_address' => $result['status']->lastInsertId(),
                 ':phone' => $data['phone'], 
                 ':email' => $data['email'], 
                 ':coverage_area' => $data['coverage_area'], 
@@ -76,7 +115,6 @@ class InstitutionModel extends Model
         }
         else
         {
-            //var_dump($data['id_nature']); exit;
             $this->sql->query('
                 UPDATE tb_institutions I 
                 JOIN tb_address A ON A.id = I.id_address 
@@ -104,7 +142,6 @@ class InstitutionModel extends Model
                     ':id_city' => $data['id_city'],
                     ':id'=> $data['id']
             ));
-
         }
     }
 
@@ -131,6 +168,20 @@ class InstitutionModel extends Model
                 JOIN tb_cities CI ON CI.id = A.id_city
                 JOIN tb_states S ON S.id = CI.id_state
             GROUP BY I.id
+            ORDER BY I.indice, I.name, I.id
         ', []);
+    }
+
+    public function delete($idInstitution)
+    {
+        $this->sql->query('DELETE FROM tb_institutions WHERE id = :id', [':id' => $idInstitution]);
+    }
+
+    public function updateCategory($data)
+    {
+        $this->sql->query('UPDATE tb_institutions SET id_category = :idCategory WHERE id = :idInstitution', array(
+            ':idCategory' => $data['idCategory'],
+            ':idInstitution' => $data['idInstitution']
+        ));
     }
 }

@@ -1,103 +1,122 @@
-<div class="clearfix"></div>
+<?php if(!empty(validation_errors())) $this->load->view('alerts/toastr.html', ['message' => 'Ops, deu erro!']); ?>
+
+<div class="clearflix"></div>
 
 <div class="allInstititutions">
     <?php $this->load->view('contents/admin/institution/partial/form_recursive.html', ['parent' => null]); ?>
 </div>
 
-<div class="modal fade" id="modal-default">
+<div class="clearfix"></div>
+
+<div class="modal fade" id="modal-lg" aria-modal="true" style="display: none;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h4 class="card-title"></h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-            </div> 
-            <div class="card-body">
+            <div class="modal-header">
+                <h4 class="modal-title">Cadastrando uma nova instituição...</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
                 <form action="/admin/institution" method="POST">
                     <div class="modal-body">
                         <div class="form-group" style="display: none;">
-                            <input type="text" class="form-control" id="id" name="id">
-                        </div>
-                        <div class="form-group" style="display: none;">
-                            <input type="text" class="form-control" id="id_category" name="id_category">
+                            <input type="text" class="form-control id_category" name="id_category" id="id_category">
                         </div>
                         <div class="row">
                             <div class="form-group col-sm-4">
                                 <label>Indice</label>
-                                <input type="text" class="form-control" id="indice" name="indice" placeholder="Insira o índece...">
+                                <input type="text" class="form-control indice" name="indice" value="<?= set_value('indice') ?>" placeholder="Insira o índece...">
+                                <div class="clearfix"></div>
+                                <?php echo form_error('indice'); ?>
                             </div>
                             <div class="form-group col-sm-4">
                                 <label>Natureza</label>
-                                <?php foreach($this->nature->list as $item): ?>
+                                <?php foreach($this->nature->list as $nature): ?>
                                     <div class="form-check">
-                                        <input class="form-check-input id_nature" type="radio" id="id_nature_<?= $item->id ?>" name="id_nature" value="<?= $item->id ?>">
-                                        <label class="form-check-label"><?= $item->name ?></label>
+                                        <input class="form-check-input id_nature_<?= $nature->id ?>" value="<?= $nature->id ?>" type="radio" <?php if(set_value('id_nature') == $nature->id) echo 'checked="checked"'; else '';?>" name="id_nature" >
+                                        <label class="form-check-label"><?= $nature->name ?></label>
                                     </div>
                                 <?php endforeach; ?>
+                                <div class="clearfix"></div>
+                                <?php echo form_error('id_nature'); ?>
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Insira o nome...">
+                            <input type="text" class="form-control name" name="name" value="<?= set_value('name') ?>" placeholder="Insira o nome...">
                         </div>
+                        <?php echo form_error('name'); ?>
                         <div class="form-group">
                             <label>Responsavel pela instituição</label>
-                            <input type="text" class="form-control" id="name_of_responsible_of_institution" name="name_of_responsible_of_institution" placeholder="Insira o responsavel pela instituição...">
+                            <input type="text" class="form-control name_of_responsible_of_institution" name="name_of_responsible_of_institution" value="<?= set_value('name_of_responsible_of_institution') ?>" placeholder="Insira o responsavel pela instituição...">
                         </div>
+                        <?php echo form_error('name_of_responsible_of_institution'); ?>
                         <div class="form-group">
                             <label>Responsavel pela área social</label>
-                            <input type="text" class="form-control" id="name_of_responsible_of_social_area" name="name_of_responsible_of_social_area" placeholder="Insira o responsavel pela área social...">
+                            <input type="text" class="form-control name_of_responsible_of_social_area" name="name_of_responsible_of_social_area" value="<?= set_value('name_of_responsible_of_social_area') ?>" placeholder="Insira o responsavel pela área social...">
                         </div>
+                        <?php echo form_error('name_of_responsible_of_social_area'); ?>
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Insira o email...">
+                            <input type="email" class="form-control email" name="email" value="<?= set_value('email') ?>" placeholder="Insira o email...">
                         </div>
+                        <?php echo form_error('email'); ?>
                         <div class="form-group cal-sm-4">
                             <label>Phone</label>
-                            <input type="text" class="form-control" id="phone" name="phone" placeholder="Insira o phone...">
+                            <input type="text" class="form-control phone" name="phone" value="<?= set_value('phone') ?>" placeholder="Insira o phone...">
                         </div>
+                        <?php echo form_error('phone'); ?>
                         <div class="form-group">
                             <label>Área de cobertura</label>
-                            <textarea class="form-control" rows="3" id="coverage_area" name="coverage_area"  placeholder="Insira a área de cobertura..."></textarea>
+                            <textarea class="form-control coverage_area" rows="3" name="coverage_area"  placeholder="Insira a área de cobertura..."><?= set_value('coverage_area') ?></textarea>
                         </div>
+                        <?php echo form_error('coverage_area'); ?>
                         <div class="form-group">
                             <div class="form-group">
                                 <label>Endereço</label>
-                                <input type="text" class="form-control" id="address" name="address" placeholder="Insira o endereço (Rua, bairro, Quadra - Número)...">
+                                <input type="text" class="form-control address" name="address" value="<?= set_value('address') ?>" placeholder="Insira o endereço (Rua, bairro, Quadra - Número)...">
                             </div>
+                            <?php echo form_error('address'); ?>
                             <div class="row">
                                 <div class="form-group col-sm-2">
                                     <label>UF</label>
-                                    <select class="form-control" id="id_state" name="id_state">
+                                    <select class="form-control id_state" id="id_state" name="id_state">
                                         <?php foreach($this->state->list as $item): ?>
-                                            <option value="<?= $item->id ?>"><?= $item->uf ?></option>
+                                            <option 
+                                                <?php 
+                                                    if(empty(set_value('id_state')) && $item->id == 26)
+                                                    { 
+                                                        echo 'selected'; 
+                                                    } 
+                                                    else 
+                                                    { 
+                                                        if(set_value('id_state') == $item->id) 
+                                                            echo 'selected'; 
+                                                    } ?> 
+                                                    value="<?= $item->id ?>">
+                                                <?= $item->uf ?>
+                                            </option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label>Cidade</label>
-                                    <select class="form-control" id="id_city" name="id_city">
-                                        <?php foreach($this->city->list as $item): ?>
-                                            <option value="<?= $item->id ?>"><?= $item->name ?></option>
-                                        <?php endforeach; ?>
+                                    <select class="form-control id_city" id="id_city" name="id_city">
                                     </select>
                                 </div>
                             </div>   
+                            <?php echo form_error('id_city'); ?>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary btnSaveCategory">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
                 </form>
             </div>
         </div>
-    <!-- /.modal-content -->
+      <!-- /.modal-content -->
     </div>
-<!-- /.modal-dialog -->
+    <!-- /.modal-dialog -->
 </div>
-
-<script src="/protected/contents/admin/institution/index.js"></script>

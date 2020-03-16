@@ -10,7 +10,7 @@ class Institution extends CI_Controller
         $this->admin->has_session(true);
 
         $this->load->model('InstitutionModel', 'institution');
-        
+
         if($this->institution->check_form($this->input->post()))
         {
             $this->institution->save($this->input->post());
@@ -37,24 +37,32 @@ class Institution extends CI_Controller
             $this->institution->listEndRelations();
 
             $this->template->load('dashboards/admin.html', 'contents/admin/institution/index.html', array(
-                'title_page' => 'AdminLTE3 - Intituições - Categorias'
+                'title_page' => 'AdminLTE3 - Intituições - Categorias',
+                'css' => ['/protected/adminLTE/packs/toastr/build/toastr.css'],
+                'js' => ['/protected/adminLTE/packs/toastr/toastr.js', '/protected/contents/admin/institution/index.js']
             ));
         }
     }
 
-    public function delete($id)
+    public function delete()
     {
-        $this->load->model('CategoryModel', 'category');
+        $this->load->model('AdminModel', 'admin');
+
+        $this->admin->has_session(true);
         
-        $this->category->listAll();
+        $this->load->model('InstitutionModel', 'intitution');
 
-        var_dump($this->category->list);
-
-        var_dump($this->category->hasLineage($id)); exit;
+        $idInstitution = $this->input->post('idInstitution');
+        
+        $this->intitution->delete($idInstitution);
     }
 
     public function loadFull($id)
     {
+        $this->load->model('AdminModel', 'admin');
+
+        $this->admin->has_session(true);
+
         $data = $this->sql->select('
             SELECT
                 I.id,
@@ -83,6 +91,19 @@ class Institution extends CI_Controller
         ));
 
         echo json_encode($data);
+    }
+
+    public function updateCategory()
+    {
+        $this->load->model('AdminModel', 'admin');
+
+        $this->admin->has_session(true);
+
+        $data = $this->input->post();
+
+        $this->load->model('InstitutionModel', 'institution');
+
+        $this->institution->updateCategory($data);
     }
 
 }
