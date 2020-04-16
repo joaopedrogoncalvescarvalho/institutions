@@ -54,4 +54,9 @@ class AdminModel extends Model
         }
     }
 
+    public function closeSession()
+    {
+        $this->session->set_userdata([$this::SESSION => null]);
+    }
+
 }

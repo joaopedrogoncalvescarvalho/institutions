@@ -1,43 +1,72 @@
-<ul>
-    <?php foreach($this->category->list as $item): ?>
-        <?php if($item->parent == $parent): ?>
-            <li>
-                <div class="icons" style="position: relative; right: 0px; display: inline;">
-                    <?= $item->name ?> &nbsp;
-                    <a href="#"><i class="btn addCategory icon-add open-icons-<?= $item->id ?>" data-id="<?= $item->id ?>" data-toggle="modal" data-target="#modal-default"></i></a> 
-                    <div style="display: none; position: relative; background-color: #FFFFFF; border-radius: 20%; left: -28px;" class="div-icons-<?= $item->id ?>">
-                        <a href="#"><i class="btn addCategory icon-add" data-id="<?= $item->id ?>" data-toggle="modal" data-target="#modal-default"></i></a> 
-                        <a href="#"><i class="btn editCategory icon-edit" data-id="<?= $item->id ?>" data-toggle="modal" data-target="#modal-default"></i></i></a> &nbsp; 
-                        <a href="#"><i class="btn icon-remove" data-id="<?= $item->id ?>" ></i></a>
-                    </div>
+<?php foreach($this->category->list as $j => $category): ?>
+    <?php if($category->parent == $parent): ?>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><b><?= $category->indice ?></b>&nbsp;&nbsp;<?= $category->name ?></h3>
+            </div>
+            <div class="card-body">
+                <div id="accordion">
+                    <?php if($this->category->hasLineage($category->id)): ?>
+                        <div id="content_category_<?= $category->id ?>" data-id="<?= $category->id ?>" class="btn-group" style="margin-bottom: 15px;">
+                            <button class="btn btn-outline-primary btn-xs addCategory" data-toggle="modal" data-target="#modal-default" data-id="<?= $category->id ?>">
+                                Adicionar
+                            </button>
+                            <button class="btn btn-outline-secondary btn-xs editCategory" data-toggle="modal" data-target="#modal-default-<?= $category->id ?>" data-id="<?= $category->id ?>">
+                                Editar
+                            </button>
+                            <button class="btn btn-outline-danger btn-xs deleteCategory" data-id="<?= $category->id ?>">
+                                Delete
+                            </button>
+                        </div>
+                        <?php $this->load->view('contents/admin/category/partial/form_recursive.html', ['parent' => $category->id]); ?>
+                    <?php else: ?>
+                        <div id="content_category_<?= $category->id ?>" data-id="<?= $category->id ?>" class="btn-group">
+                            <button class="btn btn-outline-primary btn-xs addCategory" data-toggle="modal" data-target="#modal-default"  data-id="<?= $category->id ?>">
+                                Adicionar
+                            </button>
+                            <button class="btn btn-outline-secondary btn-xs editCategory" data-toggle="modal" data-target="#modal-default-<?= $category->id ?>" data-id="<?= $category->id ?>">
+                                Editar
+                            </button>
+                            <button class="btn btn-outline-danger btn-xs deleteCategory" data-id="<?= $category->id ?>">
+                                Delete
+                            </button>
+                        </div>
+                    <?php endif; ?>
                 </div>
-                <script>
-                    $('.open-icons-<?= $item->id ?>').mousemove(function()
-                    {
-                        $('.div-icons-<?= $item->id ?>').css('display', 'inline');
-
-                        console.log($('.open-icons-<?= $item->id ?>')); 
-
-                        setTimeout(function()
-                        {
-                            $('.div-icons-<?= $item->id ?>').css('display', 'none');
-                        }, 5000);
-                    });
-
-                    $('.div-icons-<?= $item->id ?>').mousemove(function()
-                    {
-                        $('.div-icons-<?= $item->id ?>').css('display', 'inline');
-                    });
-
-                    $('.div-icons-<?= $item->id ?>').mouseout(function()
-                    {
-                        $('.div-icons-<?= $item->id ?>').css('display', 'none');
-                    });
-                </script>
-                <div>
-                    <?php $this->load->view('contents/admin/category/partial/form_recursive.html', ['parent' => $item->id]); ?>
+            </div>
+        </div>
+        <div class="modal fade" id="modal-default-<?= $category->id ?>">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title"></h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div> 
+                    <form action="/admin/category" method="POST">
+                        <div class="modal-body">
+                            <div class="form-group" style="display: none;">
+                                <input type="number" class="form-control" id="id" name="id" value="<?= $category->id ?>">
+                            </div>
+                            <div class="form-group">
+                                <label>Indice</label>
+                                <input type="text" class="form-control" id="Indice" name="indice" placeholder="Enter indice..." value="<?php if(empty(set_value('indice'))) echo $category->indice; else echo set_value('indice'); ?>">
+                            </div>
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter name..." value="<?php if(empty(set_value('name'))) echo $category->name; else echo set_value('name'); ?>" >
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary btnSaveCategory">Save changes</button>
+                        </div>
+                    </form>
                 </div>
-            </li>
-        <?php endif; ?>
-    <?php endforeach; ?>
-</ul>
+            <!-- /.modal-content -->
+            </div>
+        <!-- /.modal-dialog -->
+        </div>
+    <?php endif; ?>
+<?php endforeach; ?>

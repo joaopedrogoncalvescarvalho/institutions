@@ -25,12 +25,13 @@ class Category extends CI_Controller
             $this->category->listAll();
 
             $this->template->load('dashboards/admin.html', 'contents/admin/category/index.html', array(
-                'title_page' => 'AdminLTE3 - Intituições - Cetegorias'
+                'title_page' => 'AdminLTE3 - Intituições - Cetegorias',
+                'js' => ['/protected/contents/admin/category/index.js']
             ));
         }
     }
 
-    public function delete($id)
+    public function delete()
     {
         $this->load->model('AdminModel', 'admin');
 
@@ -38,10 +39,11 @@ class Category extends CI_Controller
 
         $this->load->model('CategoryModel', 'category');
 
+        $id = $_POST['idCategory'];
+
         $this->category->delete($id);
         
-        header('Location: /admin/category');
-        exit;
+        return true;
     }
 
 }

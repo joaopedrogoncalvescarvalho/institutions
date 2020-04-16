@@ -53,7 +53,10 @@ class CategoryModel extends Model
 
         $this->setLineage($id);
 
-        $this->sql->query('DELETE FROM tb_categories WHERE id IN (' . implode(',', $this->lineage) . ')', []);
+        if(!empty($this->lineage))
+            $this->sql->query('DELETE FROM tb_categories WHERE id IN (' . implode(',', $this->lineage) . ')', []);
+        else
+            $this->sql->query('DELETE FROM tb_categories WHERE id = :id', [':id' => $id]);
     }
 
     private function setLineage($id)

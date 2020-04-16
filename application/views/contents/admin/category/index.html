@@ -46,27 +46,3 @@
     </div>
 <!-- /.modal-dialog -->
 </div>
-
-<script>
-    $('.addCategory').click(function()
-    {
-        $('#parent').val($(this).attr('data-id'));
-        $('#id').val('');
-        $('.modal-title').text('Adicionar categoria');
-    });
-
-    $('.editCategory').click(function()
-    {
-        $('#parent').val('');
-        $('#id').val($(this).attr('data-id'));
-        $('.modal-title').text('Editar categoria');
-    });
-
-    $('.icon-remove').click(function()
-    {
-        if(confirm('Deseja remover essa categoria e suas subcategorias'))
-        {
-            window.location.href = '/admin/category/delete/' + $(this).attr('data-id');
-        }
-    });
-</script>

@@ -20,8 +20,6 @@ class Admin extends CI_Controller
 	{
 		$this->load->model('AdminModel', 'admin');
 
-		//var_dump(password_hash('4dm1n2020', PASSWORD_DEFAULT)); exit;
-
 		$this->admin->has_session(true, 'login');
 
 		if(!$this->admin->check_form($this->input->post()))
@@ -45,5 +43,15 @@ class Admin extends CI_Controller
 		}
 	}
 
-	
+	public function closeSession()
+	{
+		$this->load->model('AdminModel', 'admin');
+
+		$this->admin->has_session(true);
+
+		$this->admin->closeSession();
+
+		header('Location: /admin/admin/login');
+		exit;
+	}
 }

@@ -39,7 +39,10 @@ class Institution extends CI_Controller
             $this->template->load('dashboards/admin.html', 'contents/admin/institution/index.html', array(
                 'title_page' => 'AdminLTE3 - Intituições - Categorias',
                 'css' => ['/protected/adminLTE/packs/toastr/build/toastr.css'],
-                'js' => ['/protected/adminLTE/packs/toastr/toastr.js', '/protected/contents/admin/institution/index.js']
+                'js' => [
+                    '/protected/adminLTE/packs/toastr/toastr.js', 
+                    '/protected/contents/admin/institution/index.js'
+                ]
             ));
         }
     }
