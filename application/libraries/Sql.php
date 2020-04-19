@@ -5,7 +5,7 @@ class Sql
 	const HOSTNAME = "revistasocial.cim4doext4zz.sa-east-1.rds.amazonaws.com:3306";
 	const USERNAME = "revistadigital";
 	const PASSWORD = "adm1n2020";
-	const DBNAME = "db_revistasocial";
+	const DBNAME = "revistasocial";
 
 	private $conn;
 

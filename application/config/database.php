@@ -75,11 +75,11 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'dsn'	=> 'revistasocial.cim4doext4zz.sa-east-1.rds.amazonaws.com:3306',
+	'dsn'	=> '',
 	'hostname' => 'revistasocial.cim4doext4zz.sa-east-1.rds.amazonaws.com:3306',
 	'username' => 'revistadigital',
 	'password' => 'adm1n2020',
-	'database' => 'db_revistasocial',
+	'database' => 'revistasocial',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
