@@ -3,7 +3,7 @@
 class Sql 
 {
 	const HOSTNAME = "revistasocial.cim4doext4zz.sa-east-1.rds.amazonaws.com:3306";
-	const USERNAME = "revistadigital";
+	const USERNAME = "revistasocial";
 	const PASSWORD = "adm1n2020";
 	const DBNAME = "revistasocial";
 
