@@ -76,10 +76,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'db_institutions',
+	'hostname' => 'revistasocial.cim4doext4zz.sa-east-1.rds.amazonaws.com:3306',
+	'username' => 'revistadigital',
+	'password' => 'adm1n2020',
+	'database' => 'db_revistasocial',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
