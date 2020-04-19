@@ -75,7 +75,7 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'dsn'	=> '',
+	'dsn'	=> 'revistasocial.cim4doext4zz.sa-east-1.rds.amazonaws.com:3306',
 	'hostname' => 'revistasocial.cim4doext4zz.sa-east-1.rds.amazonaws.com:3306',
 	'username' => 'revistadigital',
 	'password' => 'adm1n2020',
