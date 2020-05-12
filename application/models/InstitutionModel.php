@@ -6,66 +6,40 @@ require_once('Model.php');
 class InstitutionModel extends Model
 {
     CONST TABLE_NAME = 'tb_institutions';
-    CONST RELATIONS = array(
-        'category' => [
-            'tb_name' => 'tb_categories', 
-            'key' => 'id',
-            'attribute' => 'id_category',
-            'model' => 'CategoryModel', 
-            'type' => 'N_1'
-        ],
-        'nature' => [
-            'tb_name' => 'tb_natures', 
-            'key' => 'id',
-            'attribute' => 'id_nature',
-            'model' => 'NatureModel', 
-            'type' => '1_1'
-        ], 
-        'address' => [
-            'tb_name' => 'tb_address', 
-            'key' => 'id',
-            'attribute' => 'id_address',
-            'model' => 'AddressModel', 
-            'type' => '1_1'
-        ], 
-    );
     
     const FORM_VALIDATION = array(
-        0 => ['indice', 'indice', ['required'], [
-            'required' => 'Campo obrigátorio',
-        ]],
-        1 => ['name', 'name', ['required', 'min_length[10]', 'max_length[200]', 'regex_match[/[a-zA-Z\u00C0-\u00FF ]+/i]/'], [
+        ['name', 'name', ['required', 'min_length[10]', 'max_length[200]', 'regex_match[/[a-zA-Z\u00C0-\u00FF ]+/i]/'], [
             'required' => 'Campo obrigátorio',
             'minlength' => 'Campo deve conter no mínino 10 caracteres',
             'maxlength' => 'Campo deve conter no mínino 200 caracteres',
             'regex_match' => 'Evite caracteres especiais'
         ]],
-        2 => ['name_of_responsible_of_institution', 'name_of_responsible_of_institution', ['required', 'min_length[6]', 'max_length[100]', 'regex_match[/[a-zA-Z\u00C0-\u00FF ]+/i]/'], [
+        ['name_of_responsible_of_institution', 'name_of_responsible_of_institution', ['required', 'min_length[6]', 'max_length[100]', 'regex_match[/[a-zA-Z\u00C0-\u00FF ]+/i]/'], [
             'required' => 'Campo obrigátorio',
             'minlength' => 'Campo deve conter no mínino 6 caracteres',
             'maxlength' => 'Campo deve conter no máximo 100 caracteres',
             'regex_match' => 'Evite caracteres especiais'
         ]],
-        3 => ['name_of_responsible_of_social_area', 'name_of_responsible_of_social_area', ['required', 'min_length[6]', 'max_length[200]', 'regex_match[/[a-zA-Z\u00C0-\u00FF ]+/i]/'], [
+        ['name_of_responsible_of_social_area', 'name_of_responsible_of_social_area', ['required', 'min_length[6]', 'max_length[200]', 'regex_match[/[a-zA-Z\u00C0-\u00FF ]+/i]/'], [
             'required' => 'Campo obrigátorio',
             'minlength' => 'Campo deve conter no mínino 6 caracteres',
             'maxlength' => 'Campo deve conter no máximo 200 caracteres',
             'regex_match' => 'Evite caracteres especiais'
         ]],
-        4 => ['phone', 'phone', ['required'], []],
-        5 => ['email', 'email', ['required', 'valid_email'], [
+        ['phone', 'phone', ['required'], []],
+        ['email', 'email', ['required', 'valid_email'], [
             'required' => 'Campo obrigátotio',
             'valid_email' => 'Endereço de e-mail inválido'
         ]],
-        6 => ['address', 'address', ['required', 'min_length[10]', 'max_length[200]'], [
+        ['address', 'address', ['required', 'min_length[10]', 'max_length[200]'], [
             'required' => 'Campo obrigátorio',
             'minlength' => 'Campo deve conter no mínino 10 caracteres',
             'maxlength' => 'Campo deve conter no máximo 200 caracteres',
         ]],
-        7 => ['coverage_area', 'coverage_area', ['required'], [
+        ['coverage_area', 'coverage_area', ['required'], [
             'required' => 'Campo obrigátorio'
         ]],
-        8 => ['id_nature', 'id_nature', ['required'], [
+        ['id_nature', 'id_nature', ['required'], [
             'required' => 'Campo obrigátorio'
         ]]
     ); 

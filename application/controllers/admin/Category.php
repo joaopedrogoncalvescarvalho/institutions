@@ -25,7 +25,6 @@ class Category extends CI_Controller
             $this->category->listAll();
 
             $this->template->load('dashboards/admin.html', 'contents/admin/category/index.html', array(
-                'title_page' => 'AdminLTE3 - Intituições - Cetegorias',
                 'js' => ['/protected/contents/admin/category/index.js']
             ));
         }

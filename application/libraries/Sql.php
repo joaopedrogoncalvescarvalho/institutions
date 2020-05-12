@@ -2,10 +2,10 @@
 
 class Sql 
 {
-	const HOSTNAME = "revistasocial.cim4doext4zz.sa-east-1.rds.amazonaws.com:3306";
-	const USERNAME = "revistasocial";
-	const PASSWORD = "adm1n2020";
-	const DBNAME = "revistasocial";
+	const HOSTNAME = "localhost:3306";
+	const USERNAME = "root";
+	const PASSWORD = "";
+	const DBNAME = "db_revista_digital";
 
 	private $conn;
 

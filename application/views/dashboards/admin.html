@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title><?= $title_page ?></title>
+  <title><?= empty($title_page) ? 'Revista digital | Admin' : $title_page ?></title>
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="/protected/adminLTE/assets/plugins/fontawesome-free/css/all.min.css">
@@ -67,7 +67,7 @@ to get the desired effect
     <a href="#" class="brand-link">
       <img src="/protected/adminLTE/assets/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <span class="brand-text font-weight-light">Revista social</span>
     </a>
 
     <!-- Sidebar -->
@@ -105,7 +105,7 @@ to get the desired effect
               <li class="nav-item">
                 <a href="/admin/category" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Categorias</p>
+                  <p>Sumário</p>
                 </a>
               </li>
             </ul>
@@ -134,7 +134,7 @@ to get the desired effect
     <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.0.0-rc.5
+      <b>Version</b> 1.0.0
     </div>
   </footer>
 </div>
