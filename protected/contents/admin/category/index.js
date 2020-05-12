@@ -5,7 +5,7 @@
         addCategory[i].onclick = function () {
             $('#parent').val($(this).attr('data-id'));
             $('#id').val('');
-            $('.modal-title').text('Adicionar categoria');
+            $('.modal-title').text('Adicionar sumário');
         }
     }
 }
@@ -15,7 +15,7 @@
     for (i in editCategory) {
         editCategory[i].onclick = function () {
             $('#id').val($(this).attr('data-id'));
-            $('.modal-title').text('Editar categoria');
+            $('.modal-title').text('Editar sumário');
         }
     }
 }

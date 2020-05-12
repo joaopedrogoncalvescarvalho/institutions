@@ -4,7 +4,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Model extends CI_Model
 {
 	public $list = array();
-	public $relations = array();
 
 	public function setData($data = array())
 	{
@@ -15,7 +14,6 @@ class Model extends CI_Model
 				$object = new $this;
 
 				unset($object->list);
-				unset($object->relations);
 
 				foreach ($row as $key => $value)
 				{		
@@ -31,7 +29,6 @@ class Model extends CI_Model
 				$object = new $this;
 
 				unset($object->list);
-				unset($object->relations);
 
 				foreach ($row as $key => $value)
 				{		
@@ -58,34 +55,6 @@ class Model extends CI_Model
 			return $this->sql->select('SELECT * FROM ' . $this::TABLE_NAME . ' WHERE id = :id', [':id' => $id]);
 		else
 			throw new Exception('Select type invalid!');
-	}
-
-	public function relations($relations = [])
-	{
-		foreach($this::RELATIONS as $i => $model)
-		{
-			switch($model['type'])
-			{
-				case '1_N': 
-				case '1_1': 
-				case 'N_1':
-					$data = $this->sql->select('SELECT * FROM ' . $model['tb_name'] . ' WHERE ' . $model['key'] . ' = ' . $this->{$model['attribute']}, []);
-					foreach ($data as $row)
-					{
-						$newModel = new stdClass;
-						foreach ($row as $key => $value)
-						{
-							$newModel->{$key} = $value;
-						}
-						$this->relations[$i][] = $newModel;
-					}
-					break;
-				case 'N_N';
-					break;
-				default:
-					throw new Exception('Defina o tipo da relação');
-			}
-		}
 	}
 
 	public function check_form($data)
