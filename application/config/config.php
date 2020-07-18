@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://dev.revistadigital:8085/';
+$config['base_url'] = 'http://revistadigital.develop:81/';
 
 /*
 |--------------------------------------------------------------------------
