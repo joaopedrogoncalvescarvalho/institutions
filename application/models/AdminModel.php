@@ -59,4 +59,38 @@ class AdminModel extends Model
         $this->session->set_userdata([$this::SESSION => null]);
     }
 
+    public function has_session($redirect = false, $page = '!login')
+	{
+		if(!$redirect)
+		{
+			if($_SESSION[$this::SESSION] != null && $_SESSION[$this::SESSION] > 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			if($page == '!login')
+			{
+				if($_SESSION[$this::SESSION] == null || $_SESSION[$this::SESSION] == 0 || !isset($_SESSION[$this::SESSION]))
+				{
+					header('Location: /admin/admin/login');
+					exit;
+				}
+			}
+			else
+			{
+				if(isset($_SESSION[$this::SESSION]) && $_SESSION[$this::SESSION] != null && $_SESSION[$this::SESSION] > 0)
+				{
+					header('Location: /admin/admin');
+					exit;
+				}
+			}
+		}
+	}
+
 }

@@ -47,6 +47,11 @@ class Model extends CI_Model
 		$this->setData($this->sql->select('SELECT * FROM ' . $this::TABLE_NAME . ' ORDER BY id'));
 	}
 
+	public function count()
+	{
+		return $this->sql->select('SELECT COUNT(*) as count FROM ' . $this::TABLE_NAME)[0]['count'];
+	}
+
 	public function findByPk($id, $typeResult = 'object')
 	{
 		if($typeResult === 'object')
@@ -86,39 +91,5 @@ class Model extends CI_Model
 			<i class="icon fas fa-exclamation-triangle"></i>', '</div>');
 
 		return $this->form_validation->run();
-	}
-
-	public function has_session($redirect = false, $page = '!login')
-	{
-		if(!$redirect)
-		{
-			if($_SESSION[$this::SESSION] != null && $_SESSION[$this::SESSION] > 0)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		else
-		{
-			if($page == '!login')
-			{
-				if($_SESSION[$this::SESSION] == null || $_SESSION[$this::SESSION] == 0 || !isset($_SESSION[$this::SESSION]))
-				{
-					header('Location: /admin/admin/login');
-					exit;
-				}
-			}
-			else
-			{
-				if(isset($_SESSION[$this::SESSION]) && $_SESSION[$this::SESSION] != null && $_SESSION[$this::SESSION] > 0)
-				{
-					header('Location: /admin/admin');
-					exit;
-				}
-			}
-		}
 	}
 }

@@ -142,7 +142,7 @@ class InstitutionModel extends Model
                 JOIN tb_cities CI ON CI.id = A.id_city
                 JOIN tb_states S ON S.id = CI.id_state
             GROUP BY I.id
-            ORDER BY I.indice, I.name, I.id
+            ORDER BY I.indice, I.name, I.id 
         ', []);
     }
 
@@ -157,5 +157,60 @@ class InstitutionModel extends Model
             ':idCategory' => $data['idCategory'],
             ':idInstitution' => $data['idInstitution']
         ));
+    }
+
+    public function listPublic()
+    {
+        $this->setData($this->sql->select("
+            SELECT
+                I.indice,
+                I.name,
+                C.name AS category,
+                I.name_of_responsible_of_institution,
+                I.name_of_responsible_of_social_area,
+                I.phone,
+                I.email,
+                I.coverage_area,
+                A.address,
+                S.uf,
+                CI.name AS city,
+                N.name AS nature
+            FROM tb_institutions I
+                JOIN tb_address A ON A.id = I.id_address
+                JOIN tb_cities CI ON CI.id = A.id_city
+                JOIN tb_states S ON S.id = CI.id_state
+                JOIN tb_natures N ON N.id = I.id_nature 
+                JOIN tb_categories C ON C.Id = I.id_category 
+            WHERE 
+                I.indice LIKE :indice AND 
+                I.name LIKE :name AND 
+                I.name_of_responsible_of_institution LIKE :name_of_responsible_of_institution AND 
+                I.name_of_responsible_of_social_area LIKE :name_of_responsible_of_social_area AND 
+                I.email LIKE :email AND 
+                A.address LIKE :address AND 
+                I.phone LIKE :phone AND
+                I.coverage_area LIKE :coverage_area AND
+                S.uf LIKE :uf AND 
+                CI.name LIKE :city AND 
+                N.name LIKE :nature AND 
+                C.name LIKE :category
+            GROUP BY I.id 
+            ORDER BY I.indice, I.name, I.id
+            LIMIT 10
+            OFFSET :offset", [
+            ':offset' => isset($_GET['page']) ? ((int)$_GET['page'] - 1)*10 : 0,
+            ':indice' => '%' . (isset($_GET['indice']) ? $_GET['indice'] : "") . '%',
+            ':name' => '%' . (isset($_GET['name']) ? $_GET['name'] : "") . '%',
+            ':name_of_responsible_of_institution' => '%' . (isset($_GET['name_of_responsible_of_institution']) ? $_GET['name_of_responsible_of_institution'] : "") . '%',
+            ':name_of_responsible_of_social_area' => '%' . (isset($_GET['name_of_responsible_of_social_area']) ? $_GET['name_of_responsible_of_social_area'] : "") . '%',
+            ':email' => '%' . (isset($_GET['email']) ? $_GET['email'] : "") . '%',
+            ':address' => '%' . (isset($_GET['address']) ? $_GET['address'] : "") . '%',
+            ':phone' => '%' . (isset($_GET['phone']) ? $_GET['phone'] : "") . '%',
+            ':coverage_area' => '%' . (isset($_GET['coverage_area']) ? $_GET['coverage_area'] : "") . '%',
+            ':uf' => '%' . (isset($_GET['uf']) ? $_GET['uf'] : "") . '%',
+            ':city' => '%' . (isset($_GET['city']) ? $_GET['city'] : "") . '%',
+            ':nature' => '%' . (isset($_GET['nature']) ? $_GET['nature'] : "") . '%',
+            ':category' => '%' . (isset($_GET['category']) ? $_GET['category'] : "") . '%'
+        ]));
     }
 }

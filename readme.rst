@@ -68,3 +68,25 @@ Acknowledgement
 
 The CodeIgniter team would like to thank EllisLab, all the
 contributors to the CodeIgniter project and you, the CodeIgniter user.
+
+
+----------------------------------------------------------------------
+DATABASE BKP
+FILE bkpdb.sql
+
+ROUTE Admin
+/admin/institution
+
+ROUTE views all institutions
+/institution
+
+Manage institution
+/admin/institution
+
+Manage category
+/admin/category
+
+Login
+admin
+adm1n2020
+-------------------------------------------------------------

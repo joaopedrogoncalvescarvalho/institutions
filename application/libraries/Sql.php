@@ -22,7 +22,14 @@ class Sql
 	{
 		foreach ($parameters as $key => $value)
 		{
-			$stmt->bindValue($key, $value);
+			if(gettype($value) == 'integer')
+			{
+				$stmt->bindValue($key, $value, PDO::PARAM_INT);
+			}
+			else
+			{
+				$stmt->bindValue($key, $value);
+			}
 		}
 	}
 
