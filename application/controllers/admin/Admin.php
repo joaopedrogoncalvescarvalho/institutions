@@ -51,7 +51,7 @@ class Admin extends CI_Controller
 
 		$this->admin->closeSession();
 
-		header('Location: /admin/admin/login');
+		header('Location: /');
 		exit;
 	}
 }

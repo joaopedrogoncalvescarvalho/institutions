@@ -11,7 +11,7 @@
     <body>
         <div>
             <form action="/institution/index" method="GET">
-                <table class="table">
+                <table class="table" style="border-bottom: 2px solid #dee2e6;">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -37,73 +37,73 @@
                             <th scope="col">
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="indice" 
-                                    value="<?= isset($_POST['indice']) ? $_POST['indice'] : '' ?>" />
+                                    value="<?= isset($_GET['indice']) ? $_GET['indice'] : '' ?>" />
                                 </div>
                             </th>
                             <th scope="col">
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="name" 
-                                    value="<?= isset($_POST['name']) ? $_POST['name'] : '' ?>" />
+                                    value="<?= isset($_GET['name']) ? $_GET['name'] : '' ?>" />
                                 </div>
                             </th>
                             <th scope="col">
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="category" 
-                                    value="<?= isset($_POST['category']) ? $_POST['category'] : '' ?>" />
+                                    value="<?= isset($_GET['category']) ? $_GET['category'] : '' ?>" />
                                 </div>
                             </th>
                                 <th scope="col">
                                     <div class="form-group">
                                     <input type="text" class="form-control" name="nature" 
-                                    value="<?= isset($_POST['nature']) ? $_POST['nature'] : '' ?>" />
+                                    value="<?= isset($_GET['nature']) ? $_GET['nature'] : '' ?>" />
                                 </div>
                             </th>
                                 <th scope="col">
                                     <div class="form-group">
                                     <input type="text" class="form-control" name="name_of_responsible_of_institution" 
-                                    value="<?= isset($_POST['name_of_responsible_of_institution']) ? $_POST['name_of_responsible_of_institution'] : '' ?>" />
+                                    value="<?= isset($_GET['name_of_responsible_of_institution']) ? $_GET['name_of_responsible_of_institution'] : '' ?>" />
                                 </div>
                             </th>
                             <th scope="col">
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="name_of_responsible_of_social_area" 
-                                    value="<?= isset($_POST['name_of_responsible_of_social_area']) ? $_POST['name_of_responsible_of_social_area'] : '' ?>" />
+                                    value="<?= isset($_GET['name_of_responsible_of_social_area']) ? $_GET['name_of_responsible_of_social_area'] : '' ?>" />
                                 </div>
                             </th>
                             <th scope="col">
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="phone" 
-                                    value="<?= isset($_POST['phone']) ? $_POST['phone'] : '' ?>" />
+                                    value="<?= isset($_GET['phone']) ? $_GET['phone'] : '' ?>" />
                                 </div>
                             </th>
                             <th scope="col">
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="email" 
-                                    value="<?= isset($_POST['email']) ? $_POST['email'] : '' ?>" />
+                                    value="<?= isset($_GET['email']) ? $_GET['email'] : '' ?>" />
                                 </div>
                             </th>
                             <th scope="col">
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="coverage_area" 
-                                    value="<?= isset($_POST['coverage_area']) ? $_POST['coverage_area'] : '' ?>" />
+                                    value="<?= isset($_GET['coverage_area']) ? $_GET['coverage_area'] : '' ?>" />
                                 </div>
                             </th>
                             <th scope="col">
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="address" 
-                                    value="<?= isset($_POST['address']) ? $_POST['address'] : '' ?>" />
+                                    value="<?= isset($_GET['address']) ? $_GET['address'] : '' ?>" />
                                 </div>
                             </th>
                             <th scope="col">
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="uf" 
-                                    value="<?= isset($_POST['uf']) ? $_POST['uf'] : '' ?>" />
+                                    value="<?= isset($_GET['uf']) ? $_GET['uf'] : '' ?>" />
                                 </div>
                             </th>
                             <th scope="col">
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="city" 
-                                    value="<?= isset($_POST['city']) ? $_POST['city'] : '' ?>" />
+                                    value="<?= isset($_GET['city']) ? $_GET['city'] : '' ?>" />
                                 </div>
                             </th>
                         </tr>
@@ -128,6 +128,32 @@
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <?php if(!isset($_GET['page']) || $_GET['page'] == 1): ?>
+                            <li class="page-item disabled"><a class="page-link" href="<?= $_SERVER['REQUEST_URI'] . '?&page=' . 1 ?>">Previous</a></li>
+                            <li class="page-item disabled"><a class="page-link" href="<?= $_SERVER['REQUEST_URI'] . '?&page=' . 1 ?>">1</a></li>
+                            <li class="page-item"><a class="page-link" href="<?= $_SERVER['REQUEST_URI'] . '?&page=' . 2 ?>">2</a></li>
+                            <li class="page-item"><a class="page-link" href="<?= $_SERVER['REQUEST_URI'] . '?&page=' . 3 ?>">3</a></li>
+                            <li class="page-item"><a class="page-link" href="<?= $_SERVER['REQUEST_URI'] . '?&page=' . 2 ?>">Next</a></li>
+                        <?php elseif($_GET['page'] == count($this->institution->list)): ?>
+                            <li class="page-item"><a class="page-link" href="<?= $_SERVER['REQUEST_URI'] . '?&page=' . ((int)$_GET['page'] - 1) ?>">Previous</a></li>
+                            <li class="page-item"><a class="page-link" href="<?= $_SERVER['REQUEST_URI'] . '?&page=' . ((int)$_GET['page'] - 2) ?>"><?= (int)$_GET['page'] - 2 ?></a></li>
+                            <li class="page-item"><a class="page-link" href="<?= $_SERVER['REQUEST_URI'] . '?&page=' . ((int)$_GET['page'] - 1) ?>"><?= (int)$_GET['page'] - 1 ?></a></li>
+                            <li class="page-item disabled"><a class="page-link" href="<?= $_SERVER['REQUEST_URI'] . '?&page=' . $_GET['page'] ?>"><?= $_GET['page'] ?></a></li>
+                            <li class="page-item disabled"><a class="page-link" href="<?= $_SERVER['REQUEST_URI'] . '?&page=' . 1 ?>">Next</a></li>
+                        <?php else: ?>
+                            <li class="page-item"><a class="page-link" href="<?= $_SERVER['REQUEST_URI'] . '?&page=' . ((int)$_GET['page'] - 1) ?>">Previous</a></li>
+                            <li class="page-item"><a class="page-link" href="<?= $_SERVER['REQUEST_URI'] . '?&page=' . ((int)$_GET['page'] - 1) ?>"><?= (int)$_GET['page'] - 1 ?></a></li>
+                            <li class="page-item disabled
+                            "><a class="page-link" href="<?= $_SERVER['REQUEST_URI'] . '?&page=' . $_GET['page'] ?>"><?= (int)$_GET['page'] ?></a></li>
+                            <li class="page-item"><a class="page-link" href="<?= $_SERVER['REQUEST_URI'] . '?&page=' . ((int)$_GET['page'] + 1) ?>"><?= (int)$_GET['page'] + 1 ?></a></li>
+                            <li class="page-item"><a class="page-link" href="<?= $_SERVER['REQUEST_URI'] . '?&page=' . ((int)$_GET['page'] + 1) ?>">Next</a></li>
+                        <?php endif; ?>
+
+                    </ul>
+                  </nav>
+                <input type="text" name="page" value="<?= empty($_GET['page']) ? 1 : $_GET['page'] ?>" style="display: none;">
                 <input type="submit" style="display: none;" >
             </form>
         </div>

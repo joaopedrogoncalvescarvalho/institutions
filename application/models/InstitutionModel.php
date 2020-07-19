@@ -195,8 +195,10 @@ class InstitutionModel extends Model
                 N.name LIKE :nature AND 
                 C.name LIKE :category
             GROUP BY I.id 
-            ORDER BY I.indice, I.name, I.id 
-            LIMIT 1", [
+            ORDER BY I.indice, I.name, I.id
+            LIMIT 10
+            OFFSET :offset", [
+            ':offset' => isset($_GET['page']) ? ((int)$_GET['page'] - 1)*10 : 0,
             ':indice' => '%' . (isset($_GET['indice']) ? $_GET['indice'] : "") . '%',
             ':name' => '%' . (isset($_GET['name']) ? $_GET['name'] : "") . '%',
             ':name_of_responsible_of_institution' => '%' . (isset($_GET['name_of_responsible_of_institution']) ? $_GET['name_of_responsible_of_institution'] : "") . '%',

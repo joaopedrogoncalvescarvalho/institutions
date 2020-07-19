@@ -9,7 +9,7 @@ class Institution extends CI_Controller
 
         $this->institution->listPublic();
         
-        $this->load->view('contents/institution/index.html');
+        $this->template->load('dashboards/index.html', 'contents/institution/index.html');
     }
 
 }
